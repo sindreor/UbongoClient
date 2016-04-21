@@ -5,16 +5,17 @@ import android.util.Pair;
 import com.example.UbonGo.DisplayElements;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Julia on 05/04/2016.
  */
 public class GameBoard{
 
-    private ArrayList<GamePiece> pieces;
-    private ArrayList<Pair<Integer, Integer>> slots;
+    private List<GamePiece> pieces;
+    private List<Pair<Integer, Integer>> slots;
 
-    public GameBoard( ArrayList<Pair<Integer, Integer>> slots){
+    public GameBoard(List<Pair<Integer, Integer>> slots){
         pieces = new ArrayList<>();
         this.slots = slots;
     }
@@ -124,12 +125,12 @@ public class GameBoard{
         return null;
     }
 
-    public ArrayList<Pair<Integer, Integer>> getSlots()
+    public List<Pair<Integer, Integer>> getSlots()
     {
         return slots;
     }
 
-    public ArrayList<GamePiece> getPieces()
+    public List<GamePiece> getPieces()
     {
         return pieces;
     }

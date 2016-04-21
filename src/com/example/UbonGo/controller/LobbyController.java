@@ -196,7 +196,7 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
         }
         else if(type==6){
             System.out.println(update);
-            GameController g=new GameController(main, new GameModel(update,model.getThisPlayer(),model.getPin()));
+            GameController g=new GameController(main, new GameModel(update,model.getThisPlayer(),model.getPin(), main));
             ServerManager.getInstance().setServerListener(g);
             main.changeMainController(g);
         }

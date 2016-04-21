@@ -14,9 +14,9 @@ public class GamePiece{
     private float x;
     private float y;
     private Pair<Integer, Integer> positionOfUpperLeftPiece;
-    private ArrayList<Pair<Integer, Integer>> slots; // TODO: Rename if it's weird
+    private List<Pair<Integer, Integer>> slots; // TODO: Rename if it's weird
 
-    public GamePiece(ArrayList<Pair<Integer, Integer>> slots){
+    public GamePiece(List<Pair<Integer, Integer>> slots){
         this.slots = slots;
     }
 
@@ -60,7 +60,7 @@ public class GamePiece{
         return y;
     }
 
-    public ArrayList<Pair<Integer, Integer>> getSlots() {
+    public List<Pair<Integer, Integer>> getSlots() {
         return slots;
     }
 
