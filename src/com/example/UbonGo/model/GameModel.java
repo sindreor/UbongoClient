@@ -40,7 +40,7 @@ public class GameModel {
 
         this.main = main;
         int difficulty = Character.getNumericValue(boardData.charAt(0)); // number - 0(easy), 1(medium), 2(hard)
-        int boardId = Character.getNumericValue(boardData.charAt(1)); // 0-4
+        int boardId = Character.getNumericValue(boardData.charAt(1)); // 0-4 (id of the board = line in resource file)
 
         List<List<Pair<Integer, Integer>>> arr = generateSlotsAndPieces(difficulty, boardId);
         board = new GameBoard(arr.get(0));
@@ -51,8 +51,10 @@ public class GameModel {
 
     /**
      * Reads and uses data from file to generate game board and corresponding pieces.
-     * @param difficulty
-     * @return
+     * @param difficulty    0(easy), 1(medium), 2(hard)
+     * @param boardId   id of the board (line number)
+     * @return  collection of generated slots (pairs of numbers)
+     *          null in case of file access problems
      */
     public List<List<Pair<Integer, Integer>>> generateSlotsAndPieces(int difficulty, int boardId){
         List<List<Pair<Integer, Integer>>> res = new ArrayList<>();
@@ -102,6 +104,14 @@ public class GameModel {
         return null;
     }
 
+    /**
+     * Converts string containing information about slots into colection of integer pairs.
+     * String has to keep the structure, where each slots are separated by space and each points are
+     * separated by ;. Numbers are separated by ,.
+     * Example: 0,0;0,1;0,2 0,0;0,1
+     * @param line  line of text with information about slots
+     * @return  line converted into collection of pairs of integers
+     */
     private List<Pair<Integer, Integer>> convertToPoints(String line){
         List<Pair<Integer, Integer>> res = new ArrayList<>();
         String[] points = line.split(";");
