@@ -36,6 +36,7 @@ public class GameModel {
     {
         this.pin=pin;
         this.playerName=playerName;
+        savedBoards = new Stack<>();
 
         this.main = main;
         int difficulty = Character.getNumericValue(boardData.charAt(0)); // number - 0(easy), 1(medium), 2(hard)
