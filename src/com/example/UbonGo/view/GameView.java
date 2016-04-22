@@ -31,6 +31,8 @@ public class GameView implements View, TouchListener, WidgetListener {
     private Image emptyImage;
     private float scale;
     private String winText="";
+    private boolean enableExit=false;
+    private PictureButton backButton;
 
     /**
      * Constructor for the game view. Requires the GameController to be created.
@@ -62,6 +64,10 @@ public class GameView implements View, TouchListener, WidgetListener {
                 DisplayElements.getInstance().getButtonFont(DisplayElements.getInstance().getHeight()));
         controller.addTouchListener(undo);
         undo.addWidgetListener(this);
+        //Add backButton
+        backButton=DisplayElements.getInstance().getBackButton();
+        controller.addTouchListener(backButton);
+        backButton.addWidgetListener(this);
     }
 
     /**
@@ -72,7 +78,10 @@ public class GameView implements View, TouchListener, WidgetListener {
         background.draw(canvas, 0, 0);
         flip.draw(canvas);
         undo.draw(canvas);
-        canvas.drawText(winText, DisplayElements.getInstance().getWidth() * 0.3f, DisplayElements.getInstance().getHeight() * 0.6f, DisplayElements.getInstance().getTextFont(DisplayElements.getInstance().getHeight() + 100));
+        if(enableExit) {
+            canvas.drawText(winText, DisplayElements.getInstance().getWidth() * 0.05f, DisplayElements.getInstance().getHeight() * 0.9f, DisplayElements.getInstance().getTextFont(DisplayElements.getInstance().getHeight() + 100));
+            backButton.draw(canvas);
+        }
     }
 
     /**
@@ -184,14 +193,21 @@ public class GameView implements View, TouchListener, WidgetListener {
 
     @Override
     public void actionPerformed(WidgetAction action) {
+        if(action.getSource()== backButton){
+            controller.backButtonClicked();
+            System.out.println("####################################");
+        }
         if (action.getSource() == flip)
             controller.flip();
         if (action.getSource() == undo)
             controller.undo();
+
+
     }
 
-    public void writeWinner(String winner){
+    public void setWinState(String winner){
         this.winText="Game over! "+winner+" won the game";
+        enableExit=true;
     }
 
 }

@@ -189,6 +189,10 @@ public class GameController extends State implements ServerListener {
         }
     }
 
+    public void backButtonClicked(){
+        main.changeMainController(new MenuController(main));
+    }
+
     /**
      * Reacts to data from server.
      * @param type
@@ -196,7 +200,7 @@ public class GameController extends State implements ServerListener {
      */
     public void receiveUpdate(int type, String update){
         if(type==4){
-            ((GameView)view).writeWinner(update);
+            ((GameView)view).setWinState(update);
         }
 
     }
