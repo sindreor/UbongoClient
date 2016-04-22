@@ -31,15 +31,22 @@ public class GameView implements View, TouchListener, WidgetListener {
     private Image emptyImage;
     private float scale;
 
+    /**
+     * Constructor for the game view. Requires the GameController to be created.
+     * @param controller
+     */
     public GameView(GameController controller)
     {
+        // Add this to touch listener
         this.controller = controller;
         controller.addTouchListener(this);
 
+        // Get images used in the view.
         background = DisplayElements.getInstance().getBackground();
         pieceImage = DisplayElements.getInstance().getPieceSquare();
         emptyImage = DisplayElements.getInstance().getEmptySquare();
 
+        // Add flip button
         flip = new TextButton(DisplayElements.getInstance().getWidth()*0.85f,
                 DisplayElements.getInstance().getHeight()*0.80f,
                 "Flip",
@@ -47,6 +54,7 @@ public class GameView implements View, TouchListener, WidgetListener {
         controller.addTouchListener(flip);
         flip.addWidgetListener(this);
 
+        // Add undo button
         undo = new TextButton(DisplayElements.getInstance().getWidth()*0.65f,
                 DisplayElements.getInstance().getHeight()*0.80f,
                 "Undo",
@@ -55,12 +63,22 @@ public class GameView implements View, TouchListener, WidgetListener {
         undo.addWidgetListener(this);
     }
 
+    /**
+     * Derived from View class. Used to draw background and buttons.
+     * @param canvas
+     */
     public void drawComponents(Canvas canvas){
         background.draw(canvas, 0, 0);
         flip.draw(canvas);
         undo.draw(canvas);
     }
 
+    /**
+     * Function that draws the gameboard on the canvas.
+     * @param canvas
+     * @param board
+     * @param scale
+     */
     public void drawBoard(Canvas canvas, GameBoard board, float scale)
     {
         float width = (float)DisplayElements.getInstance().getWidth();
@@ -77,6 +95,12 @@ public class GameView implements View, TouchListener, WidgetListener {
         }
     }
 
+    /**
+     * Function draws the board pieces on the canvas, depending on the scale.
+     * @param canvas
+     * @param board
+     * @param scale
+     */
     public void drawGamePieces(Canvas canvas, GameBoard board, float scale)
     {
         float pieceWidth =  pieceImage.getWidth();
@@ -104,6 +128,12 @@ public class GameView implements View, TouchListener, WidgetListener {
         }
     }
 
+    /**
+     * Draws the ghost piece if ghost is not NULL.
+     * @param canvas
+     * @param piece
+     * @param scale
+     */
     public void drawGhost(Canvas canvas, GamePiece piece, float scale)
     {
         if (piece == null)
@@ -124,7 +154,6 @@ public class GameView implements View, TouchListener, WidgetListener {
             pieceImage.draw(canvas, m);
         }
     }
-
 
 
     @Override
@@ -150,7 +179,7 @@ public class GameView implements View, TouchListener, WidgetListener {
                 event.getY());
         return false;
     }
-    
+
     @Override
     public void actionPerformed(WidgetAction action) {
         if (action.getSource() == flip)

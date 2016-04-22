@@ -30,6 +30,12 @@ public class GameController extends State implements ServerListener {
     float scale;
     boolean won=false;
 
+    /**
+     * Consturctor for the GameController. Requires Main and GameModel.
+     * The GameModel is used to select board
+     * @param m
+     * @param model
+     */
     public GameController(Main m, GameModel model) // TODO: change this so that networking decides what board is played, or something
     {
         main = m;
@@ -39,10 +45,18 @@ public class GameController extends State implements ServerListener {
         scale =  DisplayElements.getInstance().getHeight() / (DisplayElements.getInstance().getEmptySquare().getWidth() * 8);
     }
 
+    /**
+     * Function derived from Sheep library
+     * @param dt
+     */
     public void update(float dt){
 
     }
 
+    /**
+     * Function derived from Sheep library. Used to call draw elements in view.
+     * @param canvas
+     */
     public void draw(Canvas canvas){
         view.drawComponents(canvas);
         if(!won) {
@@ -52,18 +66,30 @@ public class GameController extends State implements ServerListener {
         }
     }
 
+    /**
+     * If a piece have been selected, it will be flipped over along the horizontal axis.
+     */
     public void flip(){
         if (lastSelectedPiece != null)
             lastSelectedPiece.flipYAxis();
     }
 
+    /**
+     * This will undo the last action done to the game.
+     */
     public void undo(){
         lastSelectedPiece = null;
         gameModel.undo();
     }
 
+    /**
+     * Controls what to do when a user first touches the screen
+     * @param x
+     * @param y
+     */
     public void touchDown(float x, float y)
     {
+        // Create x and y independent of screen size
         float relativeX = x / DisplayElements.getInstance().getWidth();
         float relativeY = y / DisplayElements.getInstance().getHeight();
 
@@ -97,6 +123,11 @@ public class GameController extends State implements ServerListener {
 
     }
 
+    /**
+     * Decides what to do when the user moves his finger across the screen.
+     * @param x
+     * @param y
+     */
     public void touchMove(float x, float y)
     {
         // Move ghost piece
@@ -105,15 +136,20 @@ public class GameController extends State implements ServerListener {
             float screenWidth = DisplayElements.getInstance().getWidth();
             float screenHeight = DisplayElements.getInstance().getHeight();
             float imgWidth = DisplayElements.getInstance().getPieceSquare().getWidth();
-
             float relX = (x - imgWidth / 2.0f * scale) / screenWidth;
             float relY = (y - imgWidth / 2.0f * scale) / screenHeight;
             gameModel.getGhostedPiece().setPosition(relX, relY);
         }
     }
 
+    /**
+     * Decides what to do when the user lets go of the screen.
+     * @param x
+     * @param y
+     */
     public void touchUp(float x, float y)
     {
+        // Create x and y independent of screen size
         float relativeX = x / DisplayElements.getInstance().getWidth();
         float relativeY = y / DisplayElements.getInstance().getHeight();
 
@@ -147,16 +183,16 @@ public class GameController extends State implements ServerListener {
         // Game completion
         if (gameModel.isCompleted())
         {
+            // Send message to server that user has won the game.
             ServerManager.getInstance().finishGame(gameModel.getPlayerName(),gameModel.getPin());
-            System.out.println("YOU WIN!!!");
-            System.out.println("YOU WIN!!!");
-            System.out.println("YOU WIN!!!");
-            System.out.println("YOU WIN!!!");
-            System.out.println("YOU WIN!!!");
-            System.out.println("YOU WIN!!!");
-            // You win! TODO: Implement what happens when the player wins
         }
     }
+
+    /**
+     * Reacts to data from server.
+     * @param type
+     * @param update
+     */
     public void receiveUpdate(int type, String update){
         if(type==4){
             won=true;
