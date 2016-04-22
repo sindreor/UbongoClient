@@ -38,9 +38,10 @@ public class GameModel {
         this.playerName=playerName;
 
         this.main = main;
-        int difficulty = 0;//Character.getNumericValue(boardData.charAt(0)); // number - 0(easy), 1(medium), 2(hard)
+        int difficulty = Character.getNumericValue(boardData.charAt(0)); // number - 0(easy), 1(medium), 2(hard)
+        int boardId = Character.getNumericValue(boardData.charAt(1)); // 0-4
 
-        List<List<Pair<Integer, Integer>>> arr = generateSlotsAndPieces(difficulty);
+        List<List<Pair<Integer, Integer>>> arr = generateSlotsAndPieces(difficulty, boardId);
         board = new GameBoard(arr.get(0));
         for (int i=1; i<arr.size(); i++){
             board.addPiece(new GamePiece(arr.get(i)));
@@ -52,18 +53,31 @@ public class GameModel {
      * @param difficulty
      * @return
      */
-    public List<List<Pair<Integer, Integer>>> generateSlotsAndPieces(int difficulty){
+    public List<List<Pair<Integer, Integer>>> generateSlotsAndPieces(int difficulty, int boardId){
         List<List<Pair<Integer, Integer>>> res = new ArrayList<>();
         String gameBoardLine;
         List<String> pieces = new ArrayList<>();
         try
         {
-            InputStream is = main.getResources().openRawResource(R.raw.slots_easy);
+            InputStream is = null;
+            switch (difficulty){
+                case 0  :   {
+                    is = main.getResources().openRawResource(R.raw.slots_easy);
+                    break;
+                }
+                case 1  :   {
+                    is = main.getResources().openRawResource(R.raw.slots_medium);
+                    break;
+                }
+                case 2  :   {
+                    is = main.getResources().openRawResource(R.raw.slots_hard);
+                    break;
+                }
+            }
             InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"));
             BufferedReader br = new BufferedReader(isr);
 
-            //choose random board
-            int lineNumber = new Random().nextInt(countLines(difficulty) + 1);
+            int lineNumber = boardId;
             while (lineNumber > 1){
                 br.readLine();
                 lineNumber--;
@@ -97,41 +111,6 @@ public class GameModel {
             res.add(Pair.create(x, y));
         }
         return res;
-    }
-
-    private int countLines(int difficulty) throws IOException {
-        InputStream is = null;
-        switch (difficulty){
-            case 0  :   {
-                is = new BufferedInputStream(main.getResources().openRawResource(R.raw.slots_easy));
-                break;
-            }
-            case 1  :   {
-                is = new BufferedInputStream(main.getResources().openRawResource(R.raw.slots_medium));
-                break;
-            }
-            case 2  :   {
-                is = new BufferedInputStream(main.getResources().openRawResource(R.raw.slots_hard));
-                break;
-            }
-        }
-        try {
-            byte[] c = new byte[1024];
-            int count = 0;
-            int readChars = 0;
-            boolean empty = true;
-            while ((readChars = is.read(c)) != -1) {
-                empty = false;
-                for (int i = 0; i < readChars; ++i) {
-                    if (c[i] == '\n') {
-                        ++count;
-                    }
-                }
-            }
-            return (count == 0 && !empty) ? 1 : count;
-        } finally {
-            is.close();
-        }
     }
 
     public GameBoard getBoard()
