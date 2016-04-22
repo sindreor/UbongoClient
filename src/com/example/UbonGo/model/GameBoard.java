@@ -19,6 +19,18 @@ public class GameBoard{
         this.slots = slots;
     }
 
+    public GameBoard(GameBoard boardToCopy){
+        this.pieces = new ArrayList<GamePiece>();
+        for (GamePiece piece : boardToCopy.pieces){
+            pieces.add(new GamePiece(piece));
+        }
+
+        this.slots = new ArrayList<Pair<Integer, Integer>>();
+        for (Pair<Integer, Integer> slot : boardToCopy.slots){
+            slots.add(new Pair<Integer, Integer>(slot.first,slot.second));
+        }
+    }
+
     public void addPiece(GamePiece piece){
         pieces.add(piece);
     }
@@ -27,10 +39,12 @@ public class GameBoard{
         for (Pair<Integer, Integer> slot : slots){
             boolean slotHasPiece = false;
             for (GamePiece piece : pieces){
-                Pair<Integer, Integer> piecePosition = piece.getPositionOfUpperLeftPiece();
+                Pair<Integer, Integer> piecePosition = piece.getBoardPositionOfReferenceSlot();
                 for (Pair<Integer,Integer> pieceSlot : piece.getSlots()) {
                     if (piecePosition != null) {
-                        if (piecePosition.first + pieceSlot.first == slot.first && piecePosition.second + pieceSlot.second == slot.second) {
+                        if (piecePosition.first + pieceSlot.first == slot.first
+                                && piecePosition.second + pieceSlot.second == slot.second)
+                        {
                             slotHasPiece = true;
                         }
                     }
@@ -46,17 +60,19 @@ public class GameBoard{
 
     /***
      * Is the position free from other pieces and belongs to the available part of the gameboard?
-     * @param newPiece
+     * @param pieceToMove
      * @param newPosition
      * @return true, if piece can be placed; false, if piece can not be placed.
      */
-    private boolean isPositionFree(GamePiece newPiece, Pair<Integer, Integer> newPosition){
+    public boolean isPositionFree(GamePiece pieceToMove, Pair<Integer, Integer> newPosition){
 
-        for (Pair<Integer, Integer> newPieceSlot : newPiece.getSlots()){
+        for (Pair<Integer, Integer> newPieceSlot : pieceToMove.getSlots()){
             //check if there is a slot at the board
             boolean slotAvailable = false;
             for (Pair<Integer,Integer> boardSlot : slots){
-                if (newPosition.first + newPieceSlot.first == boardSlot.first && newPosition.second + newPieceSlot.second == boardSlot.second){
+                if (newPosition.first + newPieceSlot.first == boardSlot.first
+                        && newPosition.second + newPieceSlot.second == boardSlot.second)
+                {
                     slotAvailable = true;
                 }
             }
@@ -66,12 +82,15 @@ public class GameBoard{
 
             //check if the slot is free
             for (GamePiece otherPiece : pieces){
-                Pair<Integer, Integer> otherPiecePosition = otherPiece.getPositionOfUpperLeftPiece();
-                if (otherPiecePosition != null) {
-                    for (Pair<Integer, Integer> otherPieceSlot : otherPiece.getSlots()) {
-                        if (otherPiecePosition.first + otherPieceSlot.first == newPosition.first + newPieceSlot.first &&
-                                otherPiecePosition.second + otherPieceSlot.second == newPosition.second + newPieceSlot.second){
-                            return false;
+                if (otherPiece != pieceToMove) {
+                    Pair<Integer, Integer> otherPiecePosition = otherPiece.getBoardPositionOfReferenceSlot();
+                    if (otherPiecePosition != null) {
+                        for (Pair<Integer, Integer> otherPieceSlot : otherPiece.getSlots()) {
+                            if (otherPiecePosition.first + otherPieceSlot.first == newPosition.first + newPieceSlot.first &&
+                                    otherPiecePosition.second + otherPieceSlot.second == newPosition.second + newPieceSlot.second)
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -106,9 +125,9 @@ public class GameBoard{
         for (int i = 0; i < pieces.size(); i++){
             GamePiece piece = pieces.get(i);
             for (Pair<Integer,Integer> pieceSlot : piece.getSlots()){
-                double verticalSlotSize = DisplayElements.getInstance().getPieceSquare().getHeight()
+                float verticalSlotSize = DisplayElements.getInstance().getPieceSquare().getHeight()
                         / DisplayElements.getInstance().getHeight();
-                double horizontalSlotSize = DisplayElements.getInstance().getPieceSquare().getWidth()
+                float horizontalSlotSize = DisplayElements.getInstance().getPieceSquare().getWidth()
                         / DisplayElements.getInstance().getWidth();
 
                 boolean fitsVertical = piece.getY() + verticalSlotSize * pieceSlot.second <= y &&
@@ -133,6 +152,7 @@ public class GameBoard{
     {
         return pieces;
     }
+
 }
 
 

@@ -2,6 +2,8 @@ package com.example.UbonGo.model;
 
 import android.util.Pair;
 
+import com.example.UbonGo.DisplayElements;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,7 @@ public class GamePiece{
 
     private float x;
     private float y;
-    private Pair<Integer, Integer> positionOfUpperLeftPiece;
+    private Pair<Integer, Integer> boardPositionOfReferenceSlot;
     private ArrayList<Pair<Integer, Integer>> slots; // TODO: Rename if it's weird
 
     public GamePiece(ArrayList<Pair<Integer, Integer>> slots){
@@ -28,25 +30,27 @@ public class GamePiece{
         this.x = gamePieceToCopy.getX();
         this.y = gamePieceToCopy.getY();
 
-        if (positionOfUpperLeftPiece != null) {
-            positionOfUpperLeftPiece = new Pair<>(
-                    gamePieceToCopy.getPositionOfUpperLeftPiece().first.intValue(),
-                    gamePieceToCopy.getPositionOfUpperLeftPiece().second.intValue());
+        if (boardPositionOfReferenceSlot != null) {
+            boardPositionOfReferenceSlot = new Pair<>(
+                    gamePieceToCopy.getBoardPositionOfReferenceSlot().first.intValue(),
+                    gamePieceToCopy.getBoardPositionOfReferenceSlot().second.intValue());
         }
     }
 
     public void setNewBoardPosition(Pair<Integer, Integer> newBoardPosition){
-        positionOfUpperLeftPiece = newBoardPosition;
+        boardPositionOfReferenceSlot = newBoardPosition;
     }
 
     public void setPosition(float x, float y)
     {
-        this.x = x;
-        this.y = y;
-        System.out.println("new position x: " + this.x);
-        System.out.println("new position y: " + this.y);
-        if (x < 0.5){
-            positionOfUpperLeftPiece = null;
+        if (staysOnScreen(x, y)) {
+            this.x = x;
+            this.y = y;
+            System.out.println("new position x: " + this.x);
+            System.out.println("new position y: " + this.y);
+            if (x < 0.5) {
+                boardPositionOfReferenceSlot = null;
+            }
         }
     }
 
@@ -60,12 +64,30 @@ public class GamePiece{
         return y;
     }
 
-    public ArrayList<Pair<Integer, Integer>> getSlots() {
+    public List<Pair<Integer, Integer>> getSlots() {
         return slots;
     }
 
-    public Pair<Integer, Integer> getPositionOfUpperLeftPiece() {
-        return positionOfUpperLeftPiece;
+    public Pair<Integer, Integer> getBoardPositionOfReferenceSlot() {
+        return boardPositionOfReferenceSlot;
+    }
+
+    public boolean staysOnScreen(float newX, float newY){
+        for (Pair<Integer, Integer> slot : slots){
+            float pieceWidthPercentage = DisplayElements.getInstance().getPieceSquare().getWidth()
+                    / DisplayElements.getInstance().getWidth();
+            float pieceHeightPercentage = DisplayElements.getInstance().getPieceSquare().getHeight()
+                    / DisplayElements.getInstance().getHeight();
+
+            if (newX + slot.first * pieceWidthPercentage < - pieceWidthPercentage * 0.7f
+                    || newY + slot.second * pieceHeightPercentage < - pieceHeightPercentage * 0.7f
+                    || newX + (slot.first + 1) * pieceWidthPercentage > 1.0f + pieceWidthPercentage * 0.7f
+                    || newY + (slot.second + 1) * pieceHeightPercentage > 1.0f + pieceHeightPercentage * 0.7f){
+
+                return false;
+            }
+        }
+        return true;
     }
 
     public void rotate90(){
@@ -85,4 +107,6 @@ public class GamePiece{
             slots.set(i, Pair.create(x, y));
         }
     }
+
 }
+
