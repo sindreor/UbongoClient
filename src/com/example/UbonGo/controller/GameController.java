@@ -23,6 +23,7 @@ public class GameController extends State implements ServerListener {
     Main main;
     View view;
     GameModel gameModel;
+    GamePiece lastSelectedPiece;
     GamePiece selectedPiece;
     Pair<Float, Float> startPosition;
     Long downPressedTime;
@@ -51,6 +52,16 @@ public class GameController extends State implements ServerListener {
         }
     }
 
+    public void flip(){
+        if (lastSelectedPiece != null)
+            lastSelectedPiece.flipYAxis();
+    }
+
+    public void undo(){
+        lastSelectedPiece = null;
+        gameModel.undo();
+    }
+
     public void touchDown(float x, float y)
     {
         float relativeX = x / DisplayElements.getInstance().getWidth();
@@ -68,7 +79,10 @@ public class GameController extends State implements ServerListener {
 
         // Get the targeted piece
         selectedPiece = gameModel.getPiece(Pair.create(relativeX, relativeY));
-        System.out.println("(" + relativeX + ", " + relativeY + ")");
+
+        // Set last selected piece
+        if (selectedPiece != null)
+            lastSelectedPiece = selectedPiece;
 
         // Check if double tap
         if (System.currentTimeMillis() - downPressedTime < 200) // Tap time 200ms
