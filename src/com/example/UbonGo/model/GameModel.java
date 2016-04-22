@@ -32,6 +32,13 @@ public class GameModel {
     private String playerName;
     private Main main;
 
+    /**
+     * Standard constructor to create the game model.
+     * @param boardData String containing the difficulty and the id of a certain board.
+     * @param playerName name of the player.
+     * @param pin pin of the game lobby.
+     * @param main main
+     */
     public GameModel(String boardData, String playerName, String pin, Main main)
     {
         this.pin=pin;
@@ -105,7 +112,7 @@ public class GameModel {
     }
 
     /**
-     * Converts string containing information about slots into colection of integer pairs.
+     * Converts string containing information about slots into collection of integer pairs.
      * String has to keep the structure, where each slots are separated by space and each points are
      * separated by ;. Numbers are separated by ,.
      * Example: 0,0;0,1;0,2 0,0;0,1
@@ -129,6 +136,11 @@ public class GameModel {
         return board;
     }
 
+    /***
+     * Moves the piece to a position on the board (position related to the slots).
+     * @param position position of the piece to move.
+     * @param boardRelativeCoordinate position where the piece should be moved to.
+     */
     public void movePieceToOn(Pair<Float, Float> position, Pair<Integer, Integer> boardRelativeCoordinate)
     {
         savedBoards.push(new GameBoard(board));
@@ -138,12 +150,16 @@ public class GameModel {
         }
     }
 
+    /***
+     * Moves the piece to a position that is not on the board.
+     * @param startPosition position of the piece that should be moved in percentage of the
+     *                      whole phone screen.
+     * @param endPosition position where the piece should be moved to.
+     */
     public void movePieceToOff(Pair<Float, Float> startPosition, Pair<Float, Float> endPosition)
     {
         savedBoards.push(new GameBoard(board));
         GamePiece p = getPiece(startPosition);
-        System.out.println("(" + startPosition.first + ", " + startPosition.second + ")");
-        System.out.println("Got for OffMove: " + p);
 
         if (p != null){
 
@@ -160,6 +176,11 @@ public class GameModel {
         }
     }
 
+    /***
+     * gives the piece at the position.
+     * @param pos phone screen coordinates in percentage.
+     * @return the piece located at pos.
+     */
     public GamePiece getPiece(Pair<Float, Float> pos)
     {
         return board.getPiece(pos.first, pos.second);
@@ -182,7 +203,7 @@ public class GameModel {
     }
 
     /**
-     * Sets the piece back to the 0,0 position.
+     * Sets the piece back to the (0,0) position.
      * @param p the piece to set back.
      */
     private void setToStartPosition(GamePiece p) {
@@ -220,16 +241,27 @@ public class GameModel {
         }
     }
 
+    /***
+     * Are the Pieces ordered in such way, that the whole Game board is filled?
+     * @return true, if game is completed; false, if game is not completed.
+     */
     public boolean isCompleted()
     {
         return board.isCompleted();
     }
 
-
+    /***
+     * Gets the ghosted Piece.
+     * @return ghosted piece.
+     */
     public GamePiece getGhostedPiece() {
         return ghostedPiece;
     }
 
+    /***
+     * Creates a copy of a piece and uses it to visualize movement of the original piece.
+     * @param ghostedPiece piece to be copied.
+     */
     public void setGhostedPiece(GamePiece ghostedPiece) {
         if (ghostedPiece != null){
             this.ghostedPiece = new GamePiece(ghostedPiece);
@@ -238,10 +270,18 @@ public class GameModel {
         }
     }
 
+    /**
+     * Gets the name of the player playing the game.
+     * @return name of the player.
+     */
     public String getPlayerName(){
         return playerName;
     }
 
+    /**
+     * Gets the pin of the game lobby.
+     * @return pin of the game lobby.
+     */
     public String getPin(){
         return pin;
     }
