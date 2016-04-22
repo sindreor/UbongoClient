@@ -185,6 +185,7 @@ public class GameController extends State implements ServerListener {
         {
             // Send message to server that user has won the game.
             ServerManager.getInstance().finishGame(gameModel.getPlayerName(),gameModel.getPin());
+            won=true;
         }
     }
 
