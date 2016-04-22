@@ -15,11 +15,21 @@ public class GameBoard{
     private List<GamePiece> pieces;
     private List<Pair<Integer, Integer>> slots;
 
+    /**
+     * main constructor to create a game board.
+     * The slots are Pairs of (x,y) coordinates that make up a grid
+     * starting with (0,0) in the upper left corner.
+     * @param slots (x,y) pairs that build the game board.
+     */
     public GameBoard(List<Pair<Integer, Integer>> slots){
         pieces = new ArrayList<>();
         this.slots = slots;
     }
 
+    /**
+     * Copy constructor
+     * @param boardToCopy board that should be copied.
+     */
     public GameBoard(GameBoard boardToCopy){
         this.pieces = new ArrayList<GamePiece>();
         for (GamePiece piece : boardToCopy.pieces){
@@ -32,10 +42,18 @@ public class GameBoard{
         }
     }
 
+    /***
+     * adds a piece to the game board.
+     * @param piece the piece that should be added.
+     */
     public void addPiece(GamePiece piece){
         pieces.add(piece);
     }
 
+    /***
+     * checks if the game board is completely filled with game pieces.
+     * @return true, if game board is filled; false, if there are free slots left.
+     */
     public boolean isCompleted(){
         for (Pair<Integer, Integer> slot : slots){
             boolean slotHasPiece = false;
@@ -60,9 +78,9 @@ public class GameBoard{
 
 
     /***
-     * Is the position free from other pieces and belongs to the available part of the gameboard?
-     * @param pieceToMove
-     * @param newPosition
+     * Is the position free from other pieces and belongs to the available part of the game board?
+     * @param pieceToMove the piece that should be moved to the newPosition.
+     * @param newPosition the position the piece should be moved to.
      * @return true, if piece can be placed; false, if piece can not be placed.
      */
     public boolean isPositionFree(GamePiece pieceToMove, Pair<Integer, Integer> newPosition){
@@ -101,9 +119,10 @@ public class GameBoard{
     }
 
     /***
-     * Tries to set a piece to a new positions.
-     * @param piece
-     * @param newPosition
+     * Tries to set a piece to a new positions. Doesn't move the piece,
+     * if the position is not possible.
+     * @param piece the piece that should be set to a new position.
+     * @param newPosition the new position of the piece.
      */
     public void setNewPiecePosition(GamePiece piece, Pair<Integer, Integer> newPosition){
         if (isPositionFree(piece, newPosition)){
@@ -113,6 +132,12 @@ public class GameBoard{
         }
     }
 
+    /***
+     * Calculates where the piece is placed according to the whole screen.
+     * It is given as percentage of the screen position
+     * @param slot slot for which the position is calculated.
+     * @return percentage at the screen with 0,0 at upper left corner.
+     */
     private Pair<Float, Float> calculateTotalPosition(Pair<Integer, Integer> slot){
 
         float x = (slot.first * DisplayElements.getInstance().getPieceSquare().getWidth() /
@@ -122,6 +147,12 @@ public class GameBoard{
         return new Pair<Float, Float>(x, y);
     }
 
+    /**
+     * Determines the piece according to the coordinates of the whole game screen.
+     * @param x phone screen position in percentage
+     * @param y phone screen position in percentage
+     * @return piece that is placed at this position.
+     */
     public GamePiece getPiece(float x, float y) {
         for (int i = 0; i < pieces.size(); i++){
             GamePiece piece = pieces.get(i);
@@ -144,11 +175,19 @@ public class GameBoard{
         return null;
     }
 
+    /**
+     * Gives all the slots that are added to the Game board.
+     * @return Slots of the game board.
+     */
     public List<Pair<Integer, Integer>> getSlots()
     {
         return slots;
     }
 
+    /**
+     * Gives all the pieces that are added to the Game board.
+     * @return pieces of the game board.
+     */
     public List<GamePiece> getPieces()
     {
         return pieces;
