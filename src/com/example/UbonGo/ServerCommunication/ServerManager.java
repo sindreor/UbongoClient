@@ -63,7 +63,6 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
 
                     if(responsePackage.getResponseError()!=null){
                         //Error case
-
                         currentListener.receiveUpdate(9,responsePackage.getResponseError());
                     }
                     else{
@@ -71,47 +70,6 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
                         currentListener.receiveUpdate(responsePackage.getId(),responsePackage.getResponseContent());
 
                     }
-
-                    /*
-                    switch (responsePackage.getId()) {
-                        case 1:
-                            // response from startLobby
-                            ResponseManager.getInstance().startLobbyResponse(responsePackage);
-
-                            currentListener.receiveUpdate("PIN",responsePackage.getResponseContent());
-
-                            break;
-                        case 2:
-                            // response from joinPlayer
-                            ResponseManager.getInstance().joinPlayerResponse(responsePackage);
-
-                            currentListener.receiveUpdate("PLAYERLIST",responsePackage.getResponseContent());
-
-                            break;
-                        case 3:
-                            // response from setDifficulty
-                            ResponseManager.getInstance().setDifficultyResponse(responsePackage);
-                            break;
-                        case 4:
-                            // response from finishGame
-                            ResponseManager.getInstance().finishGameResponse(responsePackage);
-                            break;
-                        case 5:
-                            // response from leaveGame
-                            ResponseManager.getInstance().leaveGameResponse(responsePackage);
-                            break;
-                        case 6:
-                            // response from startGame
-                            ResponseManager.getInstance().startGameResponse(responsePackage);
-                            break;
-                        case 7:
-                            // response from removePlayer
-                            ResponseManager.getInstance().removePlayerResponse(responsePackage);
-                            break;
-                        default:
-                            System.out.println("\nCannot recognize the called method");
-                            break;
-                    }*/
 
                 }
             } catch (Exception e) {

@@ -13,7 +13,7 @@ public class Config {
     // minSdkVersion=9 or put addition code in Activity
     // <Void, Void, Void> against unchecked execute call
     // device should be connected to the internet
-    public static final String HOST = "10.22.38.97";//home
+    public static final String HOST = "192.168.1.2";//home
     //public static final String HOST = "10.22.4.58"; //ntnu 27, 102
     public static final int PORT = 7777;
 }
