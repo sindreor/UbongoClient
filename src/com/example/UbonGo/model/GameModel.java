@@ -22,6 +22,7 @@ public class GameModel {
     {
         this.pin=pin;
         this.playerName=playerName;
+        savedBoards = new Stack<>();
 
         // TODO: Use board data to generate board.
 
