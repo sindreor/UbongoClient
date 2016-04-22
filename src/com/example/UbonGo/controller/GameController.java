@@ -196,8 +196,7 @@ public class GameController extends State implements ServerListener {
      */
     public void receiveUpdate(int type, String update){
         if(type==4){
-            won=true;
-            view=new WinView(this,update);
+            ((GameView)view).writeWinner(update);
         }
 
     }

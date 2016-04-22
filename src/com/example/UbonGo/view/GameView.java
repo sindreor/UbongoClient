@@ -30,6 +30,7 @@ public class GameView implements View, TouchListener, WidgetListener {
     private Image pieceImage;
     private Image emptyImage;
     private float scale;
+    private String winText="";
 
     /**
      * Constructor for the game view. Requires the GameController to be created.
@@ -71,6 +72,7 @@ public class GameView implements View, TouchListener, WidgetListener {
         background.draw(canvas, 0, 0);
         flip.draw(canvas);
         undo.draw(canvas);
+        canvas.drawText(winText, DisplayElements.getInstance().getWidth() * 0.3f, DisplayElements.getInstance().getHeight() * 0.6f, DisplayElements.getInstance().getTextFont(DisplayElements.getInstance().getHeight() + 100));
     }
 
     /**
@@ -186,6 +188,10 @@ public class GameView implements View, TouchListener, WidgetListener {
             controller.flip();
         if (action.getSource() == undo)
             controller.undo();
+    }
+
+    public void writeWinner(String winner){
+        this.winText="Game over! "+winner+" won the game";
     }
 
 }
