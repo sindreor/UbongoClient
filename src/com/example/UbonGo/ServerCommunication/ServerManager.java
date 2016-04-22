@@ -64,7 +64,7 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
                     if(responsePackage.getResponseError()!=null){
                         //Error case
 
-                        currentListener.receiveUpdate(8,responsePackage.getResponseError());
+                        currentListener.receiveUpdate(9,responsePackage.getResponseError());
                     }
                     else{
                         //Regular case
@@ -146,6 +146,13 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
 
     public void setDifficulty(String pin, String difficulty) {
         RequestPackage data = new RequestPackage(3, null, pin, difficulty, false);
+        String json = gson.toJson(data);
+        out.println(json);
+        out.flush();
+    }
+
+    public void getDifficulty(String pin){
+        RequestPackage data=new RequestPackage(8,null,pin,null,false);
         String json = gson.toJson(data);
         out.println(json);
         out.flush();

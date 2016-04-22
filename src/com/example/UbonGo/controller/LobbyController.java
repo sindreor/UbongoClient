@@ -170,28 +170,24 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
                 else {
                     ((StartedLobbyView) view).setPlayersList(model.getPlayers());
                 }
-
-
-
-
-
+            ServerManager.getInstance().getDifficulty(model.getPin());
         }
-        else if(type==3){//Receive difficulty
+        else if(type==3||type==8){//Receive difficulty
             //Convert string to integer
             int difficulty=Integer.parseInt(update);
 
             //Update model
             model.setDifficulty(difficulty);
 
-            //Update view
-            if(difficulty==0){
-                ((StartedLobbyView) view).writeDifficulty("easy");
-            }
-            else if(difficulty==1){
-                ((StartedLobbyView) view).writeDifficulty("medium");
-            }
-            else if(difficulty==2){
-                ((StartedLobbyView) view).writeDifficulty("hard");
+            if(view instanceof StartedLobbyView) {
+                //Update view
+                if (difficulty == 0) {
+                    ((StartedLobbyView) view).writeDifficulty("easy");
+                } else if (difficulty == 1) {
+                    ((StartedLobbyView) view).writeDifficulty("medium");
+                } else if (difficulty == 2) {
+                    ((StartedLobbyView) view).writeDifficulty("hard");
+                }
             }
         }
         else if(type==6){
@@ -226,7 +222,7 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
                 ((StartedLobbyView) view).setPlayersList(model.getPlayers());
             }
         }
-        else if(type==8){//Receive error message
+        else if(type==9){//Receive error message
             try{
                 ((StartLobbyView)view).setError(update);
             }
