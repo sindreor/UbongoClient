@@ -15,6 +15,7 @@ public class DisplayElements {
 
     private static DisplayElements instance=null;
 
+    //Singleton
     public static DisplayElements getInstance(){
         if(instance==null){
             instance=new DisplayElements();
@@ -27,19 +28,36 @@ public class DisplayElements {
     //The screen height, set in main inCreate
     private int height;
 
-
+    /**
+     *Method for getting the screen width
+     @return  the width of the screen
+     */
     public int getWidth(){
         return width;
     }
 
+
+    /**
+     *Method for getting the screen height
+     @return the height of the screen
+     */
     public int getHeight(){
         return  height;
     }
 
+
+    /**
+     *Method for remembering the screen height
+     * @param height screen height
+     */
     public void setHeight(int height){
         this.height=height;
     }
 
+    /**
+     *Method for remembering the screen with
+     * @param width screen width
+     */
     public void setWidth(int width){
         this.width=width;
     }
@@ -71,26 +89,32 @@ public class DisplayElements {
         return new PictureButton(R.drawable.back_button,getWidth()*0.05f,getHeight()*0.7f);
     }
 
+    //Pluss-button
     public PictureButton getPlussButton(float x, float y){
         return new PictureButton(R.drawable.pluss_button,x,y);
     }
 
+    //Minus-button
     public PictureButton getMinusButton(float x, float y){
         return new PictureButton(R.drawable.minus_button,x,y);
     }
 
+    //Background
     public Image getBackground(){
        return new Image(R.drawable.ubongo_background_color);
     }
 
+    //Game-Logo
     public Image getGameLogo(){
         return new Image(R.drawable.ubongo_background_text);
     }
 
+    //Pieces in board
     public Image getPieceSquare() {
         return new Image(R.drawable.square);
     }
 
+    //Empty pieces in board
     public Image getEmptySquare(){
         return new Image(R.drawable.empty_square);
     }

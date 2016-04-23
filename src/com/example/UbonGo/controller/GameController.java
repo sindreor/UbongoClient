@@ -9,10 +9,8 @@ import com.example.UbonGo.ServerCommunication.ServerListener;
 import com.example.UbonGo.ServerCommunication.ServerManager;
 import com.example.UbonGo.model.GameModel;
 import com.example.UbonGo.model.GamePiece;
-import com.example.UbonGo.serverManager.ClientCom;
 import com.example.UbonGo.view.GameView;
 import com.example.UbonGo.view.View;
-import com.example.UbonGo.view.WinView;
 
 import sheep.game.State;
 

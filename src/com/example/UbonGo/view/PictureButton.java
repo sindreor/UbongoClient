@@ -20,7 +20,7 @@ import sheep.input.TouchListener;
 import sheep.math.BoundingBox;
 
 /**
- * Created by Sindre on 31.03.2016.
+ *This class is just an adaptation of the Text-Button from the Sheep framework to use pictures
  */
 public class PictureButton extends Widget {
     private Drawable picture;
@@ -32,6 +32,7 @@ public class PictureButton extends Widget {
     int state;
     BoundingBox box;
     private LinkedList<WidgetListener> listeners = new LinkedList();
+
 
     public PictureButton(int i, float x, float y) {
         this(Game.getInstance().getResources().getDrawable(i),x,y);

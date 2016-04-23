@@ -1,22 +1,15 @@
 package com.example.UbonGo.view;
 
 import android.graphics.Canvas;
-import android.text.InputType;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
-
 import com.example.UbonGo.DisplayElements;
 import com.example.UbonGo.controller.LobbyController;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import sheep.graphics.Image;
 import sheep.gui.TextButton;
 import sheep.gui.WidgetAction;
@@ -38,6 +31,11 @@ public class StartedLobbyView implements View, WidgetListener {
     private Spinner dropdown;
     private TextButton btnStartGame;
 
+    /**
+     *Constructor which initializes the fields for the view
+     * @param controller the controller which holds and controls the view
+     * @param isOwner used to set decide if the view is in OwnerMode or not
+     */
     public StartedLobbyView(LobbyController controller, boolean isOwner){
         this.controller=controller;
         this.isOwner=isOwner;
@@ -78,10 +76,17 @@ public class StartedLobbyView implements View, WidgetListener {
 
 
     }
+    /**
+     *Called when the dropdown-list is changed, forwards it to the controller
+     */
     private void difficultyChanged(){
         controller.dropDownChanged((String) dropdown.getSelectedItem());
     }
 
+    /**
+     *All views should implement this method which draws on the canvas when called
+     * @param canvas
+     */
     public void drawComponents(Canvas canvas){
         background.draw(canvas, 0, 0);
         btnBackToLobbyJoining.draw(canvas);
@@ -121,6 +126,10 @@ public class StartedLobbyView implements View, WidgetListener {
 
     }
 
+    /**
+     *Method implemented since the view is implementing WidgetListener. Picks up when buttons are clicked and forwards it to the controller.
+     * @param action action received from Widget
+     */
     public void actionPerformed(WidgetAction action){
         if(action.getSource() == btnBackToLobbyJoining){
             controller.btnBackToLobbyJoiningClicked();
@@ -133,12 +142,26 @@ public class StartedLobbyView implements View, WidgetListener {
             ((ViewGroup) layout.getParent()).removeView(layout);
         }
     }
+    /**
+     *Set the playerlist that should be drawned
+     * @param players list of players that should be displayed in the view.
+     */
     public void setPlayersList(List<String> players){
         this.players=players;
     }
+
+    /**
+     *Sets the difficulty-String that should be showed drawned in the view
+     * @param difficulty the difficulty that should be shown
+     */
     public void writeDifficulty(String difficulty){
         this.difficulty=difficulty;
     }
+
+    /**
+     *Sets the pin that should be drawed in the view
+     * @param pin the pin that should be drawed.
+     */
     public void writePin(String pin){this.pin=pin; };
 
 }

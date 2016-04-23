@@ -1,8 +1,6 @@
 package com.example.UbonGo.controller;
 
 import android.graphics.Canvas;
-import android.widget.Button;
-
 import com.example.UbonGo.GameAudio;
 import com.example.UbonGo.Main;
 import com.example.UbonGo.R;
@@ -10,8 +8,6 @@ import com.example.UbonGo.model.GeneralSettings;
 import com.example.UbonGo.view.MainMenuView;
 import com.example.UbonGo.view.OptionsView;
 import com.example.UbonGo.view.View;
-
-import sheep.game.Game;
 import sheep.game.State;
 
 
@@ -24,6 +20,10 @@ public class MenuController extends State{
     private Main main;
     private GeneralSettings model;
 
+    /**
+     *Constructor that initializes
+     * @param the main activity the controller is active state in
+     */
     public MenuController(Main main){
         view =new MainMenuView(this);
         this.main=main;
@@ -32,6 +32,9 @@ public class MenuController extends State{
         GameAudio.getInstance().setVolume(model.getVolume());
     }
 
+    /**
+     *Method implemented because controller is extending State from the Sheep library. For each update the volume is checked to adjust the volume for the music.
+     */
     public void update(float dt){
         GameAudio.getInstance().setVolume(model.getVolume());
     }
@@ -47,16 +50,25 @@ public class MenuController extends State{
         main.changeMainController(new LobbyController(main));
     }
 
-
+    /**
+     *Method called when the options-button in the MainMenuView is clicked
+     */
     public void btnOptionsClicked(){
         this.view=new OptionsView(this);
         ((OptionsView) view).changeVolumeText(model.getVolume()+"");
     }
 
+    /**
+     *Method called when the back-button in the OptionsView is clicked
+     */
     public void btnBackToMainClicked(){
         this.view=new MainMenuView(this);
     }
 
+
+    /**
+     *Method called when the volume-up-button in the OptionsView is clicked
+     */
     public void btnVolumeUpClicked(){
         try {
             model.setVolume(model.getVolume() + 5);
@@ -67,6 +79,9 @@ public class MenuController extends State{
         }
     }
 
+    /**
+     *Method called when the volume-down-button in the OptionsView is clicked
+     */
     public void btnVolumeDownClicked(){
         try {
             model.setVolume(model.getVolume() - 5);

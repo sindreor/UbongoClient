@@ -23,12 +23,15 @@ public class Main extends Activity {
      * Called when the activity is first created.
      */
     private Game game;
+    /**
+     * Needed since the class is extending the Activity class
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); //Disables rotation and forces landscape orientation
 
-        //Server stuff
+
         // force for internet connection permissions
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -43,11 +46,11 @@ public class Main extends Activity {
         catch(IllegalStateException e){
             e.printStackTrace();
         }
-        //Serverstuff end*/
 
+
+        //Set the screen height and width in DisplayElements
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-
         DisplayElements.getInstance().setHeight(dm.heightPixels);
         DisplayElements.getInstance().setWidth(dm.widthPixels);
 
@@ -69,6 +72,9 @@ public class Main extends Activity {
 
 
 
+    /**
+     * This method closes the game when the back-button on the phone is clicked
+     */
     public void onBackPressed(){ //The back button closes the game, we may want to change this...
         int pid = android.os.Process.myPid();
         android.os.Process.killProcess(pid);

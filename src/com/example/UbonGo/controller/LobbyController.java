@@ -2,29 +2,18 @@ package com.example.UbonGo.controller;
 
 
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 
+import android.graphics.Canvas;
 import com.example.UbonGo.Main;
 import com.example.UbonGo.ServerCommunication.ServerListener;
 import com.example.UbonGo.ServerCommunication.ServerManager;
 import com.example.UbonGo.model.GameModel;
 import com.example.UbonGo.model.LobbyModel;
-import com.example.UbonGo.serverManager.ClientCom;
 import com.example.UbonGo.view.StartLobbyView;
 import com.example.UbonGo.view.StartedLobbyView;
 import com.example.UbonGo.view.View;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import sheep.game.State;
 import sheep.input.KeyboardListener;
 
@@ -37,6 +26,10 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
     private View view;
     private boolean isAlreadyJoined;//This is used when a playerlist is received. If the player was the new player, the GUI should change view, otherwise only the playerlist should be updated in the current view.
 
+    /**
+     *Constructor which initializes all fields in the controller and sets it as current ServerListener
+     * @param main the main actity the controller is active state in
+     */
     public LobbyController(Main main){
         this.main=main;
         this.view=new StartLobbyView(this);
@@ -44,6 +37,9 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
         isAlreadyJoined=false;
     }
 
+    /**
+     *Method due to extending State from Sheep-framework. Nothing is needed for this controller, since the lobby i static.
+     */
     public void update(float dt){
 
     }
@@ -52,11 +48,18 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
         view.drawComponents(canvas);
     }
 
+    /**
+     *Method called when the back-button in the StartLobbyView is clicked. Changes the gamestate to Menu-state
+     */
     public void btnBackClicked(){
         main.changeMainController(new MenuController(main));
         ((StartLobbyView) view).removeTextFields();
     }
 
+    /**
+     *Method called when the start-new-lobby-button is clicked in the StartLobbyView. Changes the view to a StartedLobbyView and requests the server to start a new game.
+     * @param playerName name of the player which is the owner of the new lobby/game created
+     */
     public void btnStartNewLobbyClicked(String playerName){
         try{
 
@@ -81,7 +84,11 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
 
 
     }
-
+    /**
+     *Method called when the join-lobby-button in the StartLobbyView is clicked.
+     * @param playerName name of the player joining the game.
+     * @param pin the pin of the game to be joined.
+     */
     public void btnStartExistingLobbyClicked(String playerName,String pin){
         try {
 
@@ -101,7 +108,9 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
 
 
     }
-
+    /**
+     *Method called when the back-button in the StartedLobbyView has been clicked. Changes the game state back to show the StartLobbyView. Notyfies server that a player has left the game.
+     */
     public void btnBackToLobbyJoiningClicked(){
         ServerManager.getInstance().removePlayer(model.getThisPlayer(), model.getPin());
         main.changeMainController(new LobbyController(main));
@@ -109,6 +118,10 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
 
     }
 
+    /**
+     *Method called when the start-game-button is clicked in the StartedLobbyView(OwnerMode)(See documentation for explaination of OwnerMode)
+     * Requests the server to start the game
+     */
     public void btnStartGameClicked()
     {
         System.out.println("Starting the game");
@@ -116,6 +129,9 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
 
     }
 
+    /**
+     *Method called when the dropdownlist for difficulty is changed. Notifies the server about changed difficulty.
+     */
     public void dropDownChanged(String value){
         if("easy".equals(value)) {
             model.setDifficulty(0);
@@ -128,10 +144,19 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
         }
         ServerManager.getInstance().setDifficulty(model.getPin(),model.getDifficulty()+"");
     }
+    /**
+     *Gets the main-class for this controller. This will be needed by some views that need to show Android-modules like textboxes and dropdownlists.
+     */
     public Main getMain(){
         return main;
     }
 
+
+    /**
+     *Method implemented since the controller is a ServerListener. This method is called when the Servermanager receives a response from the server.
+     * @param type type of response
+     * @param update the message received from the server
+     */
     public void receiveUpdate(int type, String update){
         if(type==1){//Receive pin
             //Update model
@@ -190,13 +215,13 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
                 }
             }
         }
-        else if(type==6){
+        else if(type==6){//Receive instruction to start game
             System.out.println(update);
             GameController g=new GameController(main, new GameModel(update,model.getThisPlayer(),model.getPin(), main));
             ServerManager.getInstance().setServerListener(g);
             main.changeMainController(g);
         }
-        else if(type==7){
+        else if(type==7){//Receive instruction saying that the owner left the game and the game therefore has to end
             if(update.equals("Owner left")){
                 //Navigate back, the lobby is closed
                 try {
@@ -224,7 +249,7 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
         }
         else if(type==9){//Receive error message
             try{
-                ((StartLobbyView)view).setError(update);
+                ((StartLobbyView)view).setError(update);//Print error message
             }
             catch(Exception e){
                 e.printStackTrace();
@@ -234,6 +259,10 @@ public class LobbyController extends State implements KeyboardListener, ServerLi
 
     }
 
+    /**
+     *Set the view for this controller
+     * @param view new view for the controller
+     */
     public void setView(View view){
         this.view=view;
     }

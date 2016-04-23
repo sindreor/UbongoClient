@@ -3,7 +3,6 @@ package com.example.UbonGo.view;
 import android.graphics.Canvas;
 
 import com.example.UbonGo.DisplayElements;
-import com.example.UbonGo.R;
 import com.example.UbonGo.controller.MenuController;
 import sheep.graphics.Image;
 import sheep.gui.TextButton;
@@ -13,6 +12,7 @@ import sheep.gui.WidgetListener;
 /**
  * Created by Sindre on 17.03.2016.
  */
+
 public class MainMenuView implements WidgetListener, View{
 
     private MenuController controller;
@@ -21,6 +21,10 @@ public class MainMenuView implements WidgetListener, View{
     private Image backgroundLogo;
     private TextButton btnOptions;
 
+    /**
+     *Constructor initializing the fields for the model
+     * @param controller The controller which holds and controls this view
+     */
     public MainMenuView(MenuController controller){
         this.controller=controller;
         background=DisplayElements.getInstance().getBackground();
@@ -38,6 +42,10 @@ public class MainMenuView implements WidgetListener, View{
         btnOptions.addWidgetListener(this);
     }
 
+    /**
+     *All views should implement this method which draws on the canvas when called
+     * @param canvas
+     */
     public void drawComponents(Canvas canvas){
         background.draw(canvas,0,0);
         backgroundLogo.draw(canvas,(DisplayElements.getInstance().getWidth()-backgroundLogo.getWidth())*0.5f,(DisplayElements.getInstance().getHeight())*0.15f);
@@ -45,6 +53,10 @@ public class MainMenuView implements WidgetListener, View{
         btnOptions.draw(canvas);
 
     }
+    /**
+     *Method implemented since the view is implementing WidgetListener. Picks up when buttons are clicked and forwards it to the controller.
+     * @param action action received forom Widget
+     */
     public void actionPerformed(WidgetAction action) {
         if (action.getSource() == btnStartGame) {
             controller.btnStartGameClicked(); //Navigates to the lobby

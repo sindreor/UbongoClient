@@ -1,13 +1,10 @@
 package com.example.UbonGo.view;
 
 import android.graphics.Canvas;
-
 import com.example.UbonGo.DisplayElements;
 import com.example.UbonGo.R;
 import com.example.UbonGo.controller.MenuController;
-
 import sheep.graphics.Image;
-import sheep.gui.TextButton;
 import sheep.gui.WidgetAction;
 import sheep.gui.WidgetListener;
 
@@ -25,6 +22,10 @@ public class OptionsView implements View, WidgetListener {
 
 
 
+    /**
+     *Constructor which initializes all the fields
+     * @param controller the controller which holds and controls the view
+     */
     public OptionsView(MenuController controller){
         this.controller=controller;
         background=new Image(R.drawable.ubongo_background_color);
@@ -48,6 +49,10 @@ public class OptionsView implements View, WidgetListener {
 
     }
 
+    /**
+     *All views should implement this method which draws on the canvas when called
+     * @param canvas
+     */
     public void drawComponents(Canvas canvas){
         background.draw(canvas, 0, 0);
         btnBackToMain.draw(canvas);
@@ -57,10 +62,19 @@ public class OptionsView implements View, WidgetListener {
         canvas.drawText(volume, DisplayElements.getInstance().getWidth() * 0.2f, DisplayElements.getInstance().getHeight()*0.5f, DisplayElements.getInstance().getTextFont(DisplayElements.getInstance().getHeight()));
     }
 
+    /**
+     *Method which the controller calls to change the text showing the volume-level
+     * @param volume new volume to display in view
+     */
     public void changeVolumeText(String volume){
         this.volume=volume;
     }
 
+
+    /**
+     *Method implemented since the view is implementing WidgetListener. Picks up when buttons are clicked and forwards it to the controller.
+     * @param action action received forom Widget
+     */
     public void actionPerformed(WidgetAction action){
         if(action.getSource()==btnBackToMain){
             controller.btnBackToMainClicked();

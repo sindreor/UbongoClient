@@ -9,9 +9,6 @@ import com.example.UbonGo.DisplayElements;
 import com.example.UbonGo.controller.GameController;
 import com.example.UbonGo.model.GameBoard;
 import com.example.UbonGo.model.GamePiece;
-
-import java.util.ArrayList;
-
 import sheep.graphics.Image;
 import sheep.gui.TextButton;
 import sheep.gui.WidgetAction;
@@ -195,7 +192,6 @@ public class GameView implements View, TouchListener, WidgetListener {
     public void actionPerformed(WidgetAction action) {
         if(action.getSource()== backButton){
             controller.backButtonClicked();
-            System.out.println("####################################");
         }
         if (action.getSource() == flip)
             controller.flip();

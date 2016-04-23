@@ -7,7 +7,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.example.UbonGo.DisplayElements;
-import com.example.UbonGo.R;
 import com.example.UbonGo.controller.LobbyController;
 
 import sheep.graphics.Image;
@@ -30,6 +29,10 @@ public class StartLobbyView implements View, WidgetListener {
     private String errorMessage="";
 
 
+    /**
+     *Constructor which initializes the fields for the view
+     * @param controller the controller which holds and controls the view
+     */
     public StartLobbyView(LobbyController controller){
         this.controller=controller;
         background=DisplayElements.getInstance().getBackground();
@@ -78,6 +81,10 @@ public class StartLobbyView implements View, WidgetListener {
 
     }
 
+    /**
+     *All views should implement this method which draws on the canvas when called
+     * @param canvas
+     */
     public void drawComponents(Canvas canvas){
         background.draw(canvas, 0, 0);
         btnBack.draw(canvas);
@@ -89,10 +96,17 @@ public class StartLobbyView implements View, WidgetListener {
         canvas.drawText(errorMessage, DisplayElements.getInstance().getWidth()*0.15f, DisplayElements.getInstance().getHeight()*0.85f,DisplayElements.getInstance().getErrorTextFont(DisplayElements.getInstance().getHeight()));
     }
 
+    /**
+     *Removes the textfields that is put on top over the canvas.
+     */
     public void removeTextFields(){
         ((ViewGroup) playerNameLayout.getParent()).removeView(playerNameLayout); //This line removes the EditText
     }
 
+    /**
+     *Method implemented since the view is implementing WidgetListener. Picks up when buttons are clicked and forwards it to the controller.
+     * @param action action received from Widget
+     */
     public void actionPerformed(WidgetAction action){
         if(action.getSource() == btnBack){
             controller.btnBackClicked();
@@ -109,6 +123,10 @@ public class StartLobbyView implements View, WidgetListener {
 
         }
     }
+    /**
+     *Method for writing an error-message on the bottom of the screen
+     * @param error error-messsage
+     */
     public void setError(String error){
         errorMessage=error;
     }
