@@ -41,6 +41,9 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    /**
+     *Method that is called to connect to the server specified by the config-class
+     */
     public void connect() {
         try {
             //connect to server
@@ -88,6 +91,10 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
     }
 
 
+    /**
+     *Method called when the client requests to create a new lobby
+     * @param name The ame of the owner for the game
+     */
     public void startLobby(String name) { //name argument needs only for logging on the server side, to see who is creating
         RequestPackage data = new RequestPackage(1, name, null, null, false);
         String json = gson.toJson(data);
@@ -95,6 +102,12 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
         out.flush();
     }
 
+    /**
+     *Method called when a new player wants to join an existing game
+     * @param name name of the player
+     * @param pin pin of the game that should be joined
+     * @param ownerStatus is the player the owner of the game
+     */
     public void joinPlayer(String name, String pin, boolean ownerStatus) {
         RequestPackage data = new RequestPackage(2, name, pin, null, ownerStatus);
         String json = gson.toJson(data);
@@ -102,6 +115,11 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
         out.flush();
     }
 
+    /**
+     *Method which is called when the owner changes the difficulty of a game
+     * @param pin pin of the game you want to set difficulty for
+     * @param difficulty new difficulty value for the game
+     */
     public void setDifficulty(String pin, String difficulty) {
         RequestPackage data = new RequestPackage(3, null, pin, difficulty, false);
         String json = gson.toJson(data);
@@ -109,6 +127,10 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
         out.flush();
     }
 
+    /**
+     *Method called when the client needs to know the difficulty for the game
+     * @param pin the game you need the difficulty for
+     */
     public void getDifficulty(String pin){
         RequestPackage data=new RequestPackage(8,null,pin,null,false);
         String json = gson.toJson(data);
@@ -116,6 +138,11 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
         out.flush();
     }
 
+    /**
+     *Method which is called when a player has won the game
+     * @param name name of the winner
+     * @param pin pin for the game which is won
+     */
     public void finishGame(String name, String pin) {
         RequestPackage data = new RequestPackage(4, name, pin, null, false);
         String json = gson.toJson(data);
@@ -123,6 +150,11 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
         out.flush();
     }
 
+    /**
+     *Method meant to be called when a player leaves in the middle of gameplay
+     * @param name name of the player
+     * @param pin pin for the game
+     */
     public void leaveGame(String name, String pin) {
         RequestPackage data = new RequestPackage(5, name, pin, null, false);
         String json = gson.toJson(data);
@@ -130,6 +162,11 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
         out.flush();
     }
 
+    /**
+     *Method that iis called when the owner hits start game in the lobby
+     * @param name name of the player which starts the game
+     * @param pin the pin of the game
+     */
     public void startGame(String name, String pin) {
         RequestPackage data = new RequestPackage(6, name, pin, null, false);
         String json = gson.toJson(data);
@@ -137,6 +174,11 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
         out.flush();
     }
 
+    /**
+     *Method called when a player leaves a lobby after joining
+     * @param name name of the player
+     * @param pin pin of the game that the player left
+     */
     public void removePlayer(String name, String pin) {
         RequestPackage data = new RequestPackage(7, name, pin, null, false);
         String json = gson.toJson(data);
@@ -144,6 +186,10 @@ public class ServerManager extends AsyncTask<Void, Void, Void> {
         out.flush();
     }
 
+    /**
+     *Method for setting the controller class that is the current listener of the server. We just allow one listener at the time.
+     * @param listener The new listener
+     */
     public void setServerListener(ServerListener listener){
         this.currentListener=listener;
     }
